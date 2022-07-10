@@ -28,6 +28,7 @@ use_gpu = True
 Image.LOAD_TRUNCATED_IMAGES = True
 
 import sys
+import path
 try:
     LIVE_WILD_DATASET_PATH = os.environ["LIVE_WILD_DATASET_PATH"]
 except KeyError:
