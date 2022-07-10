@@ -27,6 +27,13 @@ from scipy.stats import spearmanr
 use_gpu = True
 Image.LOAD_TRUNCATED_IMAGES = True
 
+import sys
+try:
+    LIVE_WILD_DATASET_PATH = os.environ["LIVE_WILD_DATASET_PATH"]
+except KeyError:
+    print("Env var \"LIVE_WILD_DATASET_PATH\" must be defined")
+    sys.exit(1)
+
 class ImageRatingsDataset(Dataset):
     """Images dataset."""
 
@@ -529,7 +536,7 @@ def load_data(mod = 'train', dataset = 'tid2013', worker_idx = 0):
     else:
         cross_data_path = 'LIVE_WILD/image_labeled_by_score.csv'
         transformed_dataset_valid_1 = ImageRatingsDataset(csv_file=cross_data_path,
-                                                        root_dir='/home/hancheng/IQA/iqa-db/LIVE_WILD/images',
+                                                        root_dir=path.join(LIVE_WILD_DATASET_PATH, 'images'),
                                                         transform=transforms.Compose([Rescale(output_size=(224, 224)),
                                                                                       Normalize(),
                                                                                       ToTensor(),

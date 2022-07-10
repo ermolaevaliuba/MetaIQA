@@ -27,6 +27,13 @@ from scipy.stats import spearmanr, pearsonr
 use_gpu = True
 Image.LOAD_TRUNCATED_IMAGES = True
 
+import sys
+try:
+    LIVE_WILD_DATASET_PATH = os.environ["LIVE_WILD_DATASET_PATH"]
+except KeyError:
+    print("Env var \"LIVE_WILD_DATASET_PATH\" must be defined")
+    sys.exit(1)
+
 class ImageRatingsDataset(Dataset):
     """Images dataset."""
 
@@ -365,7 +372,7 @@ def load_data(mod = 'train'):
 
     output_size = (224, 224)
     transformed_dataset_train = ImageRatingsDataset(csv_file=train_path,
-                                                    root_dir='/home/hancheng/IQA/iqa-db/LIVE_WILD/images/',
+                                                    root_dir=path.join(LIVE_WILD_DATASET_PATH, 'images/'),
                                                     transform=transforms.Compose([Rescale(output_size=(256, 256)),
                                                                                   RandomHorizontalFlip(0.5),
                                                                                   RandomCrop(
@@ -374,7 +381,7 @@ def load_data(mod = 'train'):
                                                                                   ToTensor(),
                                                                                   ]))
     transformed_dataset_valid = ImageRatingsDataset(csv_file=test_path,
-                                                    root_dir='/home/hancheng/IQA/iqa-db/LIVE_WILD/images/',
+                                                    root_dir=path.join(LIVE_WILD_DATASET_PATH, 'images/'),
                                                     transform=transforms.Compose([Rescale(output_size=(224, 224)),
                                                                                   Normalize(),
                                                                                   ToTensor(),
